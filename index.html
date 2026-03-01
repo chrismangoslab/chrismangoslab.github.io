@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Dev Feed — chrismangoslab</title>
+  <meta name="description" content="바이브 코딩 개발자를 위한 AI 기술 트렌드 뉴스, 블로그, 유튜브 채널 큐레이션">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #21262d;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --accent3: #f78166;
+      --accent4: #d2a8ff;
+      --accent5: #ffa657;
+      --tag-bg: #1f2937;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 24px 0 20px;
+      position: sticky;
+      top: 0;
+      background: rgba(13, 17, 23, 0.95);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #58a6ff, #3fb950);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+
+    .logo-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .header-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .updated-badge {
+      display: inline-block;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 24px 0;
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transition: all 0.15s;
+    }
+
+    nav a:hover {
+      color: var(--text);
+      background: var(--surface2);
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px 64px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 32px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 40px;
+    }
+
+    .hero h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, #58a6ff, #3fb950);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-icon {
+      font-size: 18px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .section-count {
+      font-size: 12px;
+      color: var(--text-muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1px 7px;
+      margin-left: auto;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      display: block;
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      transition: all 0.15s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--card-accent, var(--accent));
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .card-favicon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+
+    .card-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .card-url {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 1px;
+      word-break: break-all;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .tag.en { color: var(--accent); border-color: rgba(88, 166, 255, 0.3); }
+    .tag.ko { color: var(--accent2); border-color: rgba(63, 185, 80, 0.3); }
+    .tag.free { color: var(--accent2); }
+    .tag.research { color: var(--accent4); border-color: rgba(210, 168, 255, 0.3); }
+    .tag.video { color: var(--accent3); border-color: rgba(247, 129, 102, 0.3); }
+    .tag.community { color: var(--accent5); border-color: rgba(255, 166, 87, 0.3); }
+
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .news-card {
+      display: block;
+      text-decoration: none;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .news-card:hover {
+      border-color: var(--accent);
+      background: var(--surface2);
+    }
+
+    .news-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .news-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .news-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .news-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .news-tags {
+      display: flex;
+      gap: 4px;
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    footer a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 22px; }
+      .grid { grid-template-columns: 1fr; }
+      .news-desc { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a class="logo" href="/">
+      <div class="logo-icon">🥭</div>
+      <div>
+        <div class="logo-text">AI Dev Feed</div>
+        <div class="logo-sub">by chrismangoslab</div>
+      </div>
+    </a>
+    <div class="header-meta">
+      바이브 코딩 개발자를 위한 AI 트렌드 큐레이션
+      <br>
+      <span class="updated-badge">Updated 2026-03-02</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <h1>개발자를 위한 <span>AI 트렌드</span> 모음</h1>
+    <p>GeekNews 감성으로 선별한 뉴스레터, 블로그, 유튜브 채널, 커뮤니티. 매주 업데이트.</p>
+  </div>
+
+  <!-- 뉴스 & 뉴스레터 -->
+  <section class="section" id="news">
+    <div class="section-header">
+      <span class="section-icon">📰</span>
+      <span class="section-title">뉴스 & 뉴스레터</span>
+      <span class="section-count">8</span>
+    </div>
+    <div class="news-list">
+
+      <a class="news-card" href="https://news.hada.io" target="_blank" rel="noopener">
+        <div class="news-icon">🇰🇷</div>
+        <div class="news-body">
+          <div class="news-name">GeekNews (긱뉴스)</div>
+          <div class="news-desc">한국 개발자 커뮤니티의 HN. AI/개발 트렌드 링크 집합소</div>
+        </div>
+        <div class="news-tags"><span class="tag ko">한국어</span></div>
+      </a>
+
+      <a class="news-card" href="https://news.ycombinator.com" target="_blank" rel="noopener">
+        <div class="news-icon">🔶</div>
+        <div class="news-body">
+          <div class="news-name">Hacker News</div>
+          <div class="news-desc">스타트업/AI/개발 원조 링크 집합소. YC 운영</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span></div>
+      </a>
+
+      <a class="news-card" href="https://tldr.tech/ai" target="_blank" rel="noopener">
+        <div class="news-icon">⚡</div>
+        <div class="news-body">
+          <div class="news-name">TLDR AI</div>
+          <div class="news-desc">매일 5분이면 읽는 AI 뉴스 요약 뉴스레터. 구독자 100만+</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag free">무료</span></div>
+      </a>
+
+      <a class="news-card" href="https://www.deeplearning.ai/the-batch/" target="_blank" rel="noopener">
+        <div class="news-icon">🧠</div>
+        <div class="news-body">
+          <div class="news-name">The Batch — DeepLearning.AI</div>
+          <div class="news-desc">Andrew Ng이 큐레이팅하는 주간 AI 뉴스레터. 논문 + 업계 소식</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag free">무료</span></div>
+      </a>
+
+      <a class="news-card" href="https://lastweekin.ai" target="_blank" rel="noopener">
+        <div class="news-icon">📅</div>
+        <div class="news-body">
+          <div class="news-name">Last Week in AI</div>
+          <div class="news-desc">지난 한 주의 AI 연구·업계 소식 요약 팟캐스트 + 뉴스레터</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag free">무료</span></div>
+      </a>
+
+      <a class="news-card" href="https://buttondown.com/ainews" target="_blank" rel="noopener">
+        <div class="news-icon">📬</div>
+        <div class="news-body">
+          <div class="news-name">AI News (Smol AI)</div>
+          <div class="news-desc">Discord/Reddit/Twitter AI 커뮤니티 핵심 논의를 AI로 요약</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag free">무료</span></div>
+      </a>
+
+      <a class="news-card" href="https://www.interconnects.ai" target="_blank" rel="noopener">
+        <div class="news-icon">🔗</div>
+        <div class="news-body">
+          <div class="news-name">Interconnects — Nathan Lambert</div>
+          <div class="news-desc">LLM 정렬·RLHF 전문가의 심층 분석 뉴스레터</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag research">리서치</span></div>
+      </a>
+
+      <a class="news-card" href="https://www.bensbites.com" target="_blank" rel="noopener">
+        <div class="news-icon">🍪</div>
+        <div class="news-body">
+          <div class="news-name">Ben's Bites</div>
+          <div class="news-desc">AI 제품·스타트업 중심 일간 뉴스레터. 실용적 관점</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag free">무료</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- 블로그 -->
+  <section class="section" id="blogs">
+    <div class="section-header">
+      <span class="section-icon">✍️</span>
+      <span class="section-title">블로그 & 기술 글</span>
+      <span class="section-count">10</span>
+    </div>
+    <div class="grid">
+
+      <a class="card" href="https://karpathy.github.io" target="_blank" rel="noopener" style="--card-accent:#58a6ff">
+        <div class="card-top">
+          <div class="card-favicon">🧑‍💻</div>
+          <div>
+            <div class="card-name">Andrej Karpathy</div>
+            <div class="card-url">karpathy.github.io</div>
+          </div>
+        </div>
+        <div class="card-desc">전 Tesla AI, OpenAI. 신경망 직접 구현으로 설명하는 깊이 있는 글. makemore, nanoGPT 저자</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag research">딥러닝</span></div>
+      </a>
+
+      <a class="card" href="https://simonwillison.net" target="_blank" rel="noopener" style="--card-accent:#3fb950">
+        <div class="card-top">
+          <div class="card-favicon">🦁</div>
+          <div>
+            <div class="card-name">Simon Willison's Weblog</div>
+            <div class="card-url">simonwillison.net</div>
+          </div>
+        </div>
+        <div class="card-desc">LLM 실용 활용, 도구 리뷰, 보안까지. 개발자 관점 LLM 글의 교과서. Datasette 저자</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag free">LLM</span></div>
+      </a>
+
+      <a class="card" href="https://lilianweng.github.io" target="_blank" rel="noopener" style="--card-accent:#d2a8ff">
+        <div class="card-top">
+          <div class="card-favicon">🌸</div>
+          <div>
+            <div class="card-name">Lilian Weng's Blog</div>
+            <div class="card-url">lilianweng.github.io</div>
+          </div>
+        </div>
+        <div class="card-desc">OpenAI 연구원. Attention, RLHF, Diffusion 등 핵심 주제를 명확하게 설명하는 장문 포스트</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag research">리서치</span></div>
+      </a>
+
+      <a class="card" href="https://magazine.sebastianraschka.com" target="_blank" rel="noopener" style="--card-accent:#ffa657">
+        <div class="card-top">
+          <div class="card-favicon">📖</div>
+          <div>
+            <div class="card-name">Ahead of AI</div>
+            <div class="card-url">Sebastian Raschka</div>
+          </div>
+        </div>
+        <div class="card-desc">LLM 논문 리뷰 및 ML 트렌드 분석. 〈Build a LLM from Scratch〉 저자</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag research">논문리뷰</span></div>
+      </a>
+
+      <a class="card" href="https://jalammar.github.io" target="_blank" rel="noopener" style="--card-accent:#58a6ff">
+        <div class="card-top">
+          <div class="card-favicon">🎨</div>
+          <div>
+            <div class="card-name">Jay Alammar's Blog</div>
+            <div class="card-url">jalammar.github.io</div>
+          </div>
+        </div>
+        <div class="card-desc">Transformer, BERT, GPT 시각화 설명의 클래식. 개념 처음 공부할 때 필독</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag free">시각화</span></div>
+      </a>
+
+      <a class="card" href="https://eugeneyan.com" target="_blank" rel="noopener" style="--card-accent:#3fb950">
+        <div class="card-top">
+          <div class="card-favicon">🏗️</div>
+          <div>
+            <div class="card-name">Eugene Yan</div>
+            <div class="card-url">eugeneyan.com</div>
+          </div>
+        </div>
+        <div class="card-desc">Amazon AI 연구원. LLM 프로덕션 적용, RAG, 평가 시스템 등 실전 ML 엔지니어링</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag free">MLOps</span></div>
+      </a>
+
+      <a class="card" href="https://thegradient.pub" target="_blank" rel="noopener" style="--card-accent:#d2a8ff">
+        <div class="card-top">
+          <div class="card-favicon">📐</div>
+          <div>
+            <div class="card-name">The Gradient</div>
+            <div class="card-url">thegradient.pub</div>
+          </div>
+        </div>
+        <div class="card-desc">Stanford AI Lab 운영. ML 연구 동향 심층 분석 및 인터뷰 위주의 독립 미디어</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag research">리서치</span></div>
+      </a>
+
+      <a class="card" href="https://www.semianalysis.com" target="_blank" rel="noopener" style="--card-accent:#ffa657">
+        <div class="card-top">
+          <div class="card-favicon">🔬</div>
+          <div>
+            <div class="card-name">SemiAnalysis</div>
+            <div class="card-url">semianalysis.com</div>
+          </div>
+        </div>
+        <div class="card-desc">AI 반도체·인프라·모델 비용 구조 심층 분석. GPU 클러스터, 훈련 비용 등 하드웨어 관점</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag research">인프라</span></div>
+      </a>
+
+      <a class="card" href="https://www.oneusefulthing.org" target="_blank" rel="noopener" style="--card-accent:#58a6ff">
+        <div class="card-top">
+          <div class="card-favicon">💡</div>
+          <div>
+            <div class="card-name">One Useful Thing</div>
+            <div class="card-url">Ethan Mollick</div>
+          </div>
+        </div>
+        <div class="card-desc">Wharton 교수. AI가 실제 업무·교육에 미치는 영향에 대한 실용적 분석</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag free">AI활용</span></div>
+      </a>
+
+      <a class="card" href="https://velog.io/@kos/" target="_blank" rel="noopener" style="--card-accent:#3fb950">
+        <div class="card-top">
+          <div class="card-favicon">🇰🇷</div>
+          <div>
+            <div class="card-name">Velog — AI 태그</div>
+            <div class="card-url">velog.io</div>
+          </div>
+        </div>
+        <div class="card-desc">한국 개발자들의 AI/LLM 실습 경험 공유. 번역글 + 실습 튜토리얼 풍부</div>
+        <div class="card-tags"><span class="tag ko">한국어</span><span class="tag free">튜토리얼</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- 유튜브 -->
+  <section class="section" id="youtube">
+    <div class="section-header">
+      <span class="section-icon">▶️</span>
+      <span class="section-title">유튜브 채널</span>
+      <span class="section-count">9</span>
+    </div>
+    <div class="grid">
+
+      <a class="card" href="https://www.youtube.com/@AndrejKarpathy" target="_blank" rel="noopener" style="--card-accent:#f78166">
+        <div class="card-top">
+          <div class="card-favicon">🧑‍💻</div>
+          <div>
+            <div class="card-name">Andrej Karpathy</div>
+            <div class="card-url">youtube.com/@AndrejKarpathy</div>
+          </div>
+        </div>
+        <div class="card-desc">GPT, nanoGPT, Tokenizer를 처음부터 직접 구현. 딥러닝 강의 중 가장 명확하다는 평가</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag video">강의</span></div>
+      </a>
+
+      <a class="card" href="https://www.youtube.com/@YannicKilcher" target="_blank" rel="noopener" style="--card-accent:#f78166">
+        <div class="card-top">
+          <div class="card-favicon">📄</div>
+          <div>
+            <div class="card-name">Yannic Kilcher</div>
+            <div class="card-url">youtube.com/@YannicKilcher</div>
+          </div>
+        </div>
+        <div class="card-desc">최신 ML 논문 리뷰 및 해설. GPT-4, Sora, RWKV 등 핵심 논문을 빠르게 커버</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag video">논문리뷰</span></div>
+      </a>
+
+      <a class="card" href="https://www.youtube.com/@TwoMinutePapers" target="_blank" rel="noopener" style="--card-accent:#f78166">
+        <div class="card-top">
+          <div class="card-favicon">⏱️</div>
+          <div>
+            <div class="card-name">Two Minute Papers</div>
+            <div class="card-url">youtube.com/@TwoMinutePapers</div>
+          </div>
+        </div>
+        <div class="card-desc">최신 AI 연구를 2~5분 영상으로 요약. 비주얼 효과 중심의 흥미로운 논문 소개</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag video">숏폼</span></div>
+      </a>
+
+      <a class="card" href="https://www.youtube.com/@aiexplained-official" target="_blank" rel="noopener" style="--card-accent:#f78166">
+        <div class="card-top">
+          <div class="card-favicon">🤖</div>
+          <div>
+            <div class="card-name">AI Explained</div>
+            <div class="card-url">youtube.com/@aiexplained-official</div>
+          </div>
+        </div>
+        <div class="card-desc">GPT-4, Claude, Gemini 등 LLM 모델 비교 및 AI 업계 동향 심층 분석</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag video">분석</span></div>
+      </a>
+
+      <a class="card" href="https://www.youtube.com/@3blue1brown" target="_blank" rel="noopener" style="--card-accent:#f78166">
+        <div class="card-top">
+          <div class="card-favicon">🌀</div>
+          <div>
+            <div class="card-name">3Blue1Brown</div>
+            <div class="card-url">youtube.com/@3blue1brown</div>
+          </div>
+        </div>
+        <div class="card-desc">신경망, Transformer 수학적 직관을 아름다운 시각화로 설명. 유튜브 수학/AI 교육의 정수</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag video">수학</span></div>
+      </a>
+
+      <a class="card" href="https://www.youtube.com/@Fireship" target="_blank" rel="noopener" style="--card-accent:#f78166">
+        <div class="card-top">
+          <div class="card-favicon">🔥</div>
+          <div>
+            <div class="card-name">Fireship</div>
+            <div class="card-url">youtube.com/@Fireship</div>
+          </div>
+        </div>
+        <div class="card-desc">AI 도구 및 개발 트렌드를 100초 영상으로. 빠른 템포의 개발자 뉴스 미디어</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag video">숏폼</span></div>
+      </a>
+
+      <a class="card" href="https://www.youtube.com/@matthew_berman" target="_blank" rel="noopener" style="--card-accent:#f78166">
+        <div class="card-top">
+          <div class="card-favicon">🧪</div>
+          <div>
+            <div class="card-name">Matthew Berman</div>
+            <div class="card-url">youtube.com/@matthew_berman</div>
+          </div>
+        </div>
+        <div class="card-desc">새로운 AI 모델/도구 출시마다 빠른 리뷰. 로컬 LLM, 에이전트 실습 위주</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag video">리뷰</span></div>
+      </a>
+
+      <a class="card" href="https://www.youtube.com/@AssemblyAI" target="_blank" rel="noopener" style="--card-accent:#f78166">
+        <div class="card-top">
+          <div class="card-favicon">🏗️</div>
+          <div>
+            <div class="card-name">AssemblyAI</div>
+            <div class="card-url">youtube.com/@AssemblyAI</div>
+          </div>
+        </div>
+        <div class="card-desc">LLM, RAG, 파인튜닝 등 실전 AI 개발 튜토리얼. 코드 중심의 엔지니어 채널</div>
+        <div class="card-tags"><span class="tag en">EN</span><span class="tag video">튜토리얼</span></div>
+      </a>
+
+      <a class="card" href="https://www.youtube.com/@혁펜하임" target="_blank" rel="noopener" style="--card-accent:#f78166">
+        <div class="card-top">
+          <div class="card-favicon">🇰🇷</div>
+          <div>
+            <div class="card-name">혁펜하임</div>
+            <div class="card-url">youtube.com/@혁펜하임</div>
+          </div>
+        </div>
+        <div class="card-desc">딥러닝 수학 개념을 한국어로 명쾌하게. Attention, LSTM, GAN 등 핵심 개념 강의</div>
+        <div class="card-tags"><span class="tag ko">한국어</span><span class="tag video">강의</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- AI 도구 (Vibe Coding) -->
+  <section class="section" id="tools">
+    <div class="section-header">
+      <span class="section-icon">⚒️</span>
+      <span class="section-title">바이브 코딩 도구</span>
+      <span class="section-count">8</span>
+    </div>
+    <div class="grid">
+
+      <a class="card" href="https://www.cursor.com" target="_blank" rel="noopener" style="--card-accent:#58a6ff">
+        <div class="card-top">
+          <div class="card-favicon">🖱️</div>
+          <div>
+            <div class="card-name">Cursor</div>
+            <div class="card-url">cursor.com</div>
+          </div>
+        </div>
+        <div class="card-desc">AI-first 코드 에디터. Composer로 멀티파일 편집, Claude/GPT-4 내장. 바이브 코딩 표준 도구</div>
+        <div class="card-tags"><span class="tag free">무료티어</span><span class="tag en">IDE</span></div>
+      </a>
+
+      <a class="card" href="https://claude.ai/code" target="_blank" rel="noopener" style="--card-accent:#d2a8ff">
+        <div class="card-top">
+          <div class="card-favicon">🤖</div>
+          <div>
+            <div class="card-name">Claude Code</div>
+            <div class="card-url">claude.ai/code</div>
+          </div>
+        </div>
+        <div class="card-desc">Anthropic의 터미널 기반 AI 코딩 어시스턴트. 파일시스템 직접 조작, 에이전틱 코딩</div>
+        <div class="card-tags"><span class="tag en">CLI</span><span class="tag free">에이전트</span></div>
+      </a>
+
+      <a class="card" href="https://aider.chat" target="_blank" rel="noopener" style="--card-accent:#3fb950">
+        <div class="card-top">
+          <div class="card-favicon">🗣️</div>
+          <div>
+            <div class="card-name">Aider</div>
+            <div class="card-url">aider.chat</div>
+          </div>
+        </div>
+        <div class="card-desc">터미널에서 Git과 통합된 AI 페어 프로그래밍 도구. 오픈소스, 로컬 모델 지원</div>
+        <div class="card-tags"><span class="tag free">오픈소스</span><span class="tag en">CLI</span></div>
+      </a>
+
+      <a class="card" href="https://github.com/continuedev/continue" target="_blank" rel="noopener" style="--card-accent:#ffa657">
+        <div class="card-top">
+          <div class="card-favicon">▶️</div>
+          <div>
+            <div class="card-name">Continue</div>
+            <div class="card-url">github.com/continuedev/continue</div>
+          </div>
+        </div>
+        <div class="card-desc">VS Code / JetBrains용 오픈소스 AI 코딩 어시스턴트. 로컬 LLM 연동 가능</div>
+        <div class="card-tags"><span class="tag free">오픈소스</span><span class="tag en">IDE플러그인</span></div>
+      </a>
+
+      <a class="card" href="https://www.perplexity.ai" target="_blank" rel="noopener" style="--card-accent:#58a6ff">
+        <div class="card-top">
+          <div class="card-favicon">🔍</div>
+          <div>
+            <div class="card-name">Perplexity AI</div>
+            <div class="card-url">perplexity.ai</div>
+          </div>
+        </div>
+        <div class="card-desc">AI 기반 검색엔진. 최신 기술 문서, 논문, 스택오버플로우를 통합 검색하고 답변</div>
+        <div class="card-tags"><span class="tag free">무료티어</span><span class="tag en">검색</span></div>
+      </a>
+
+      <a class="card" href="https://v0.dev" target="_blank" rel="noopener" style="--card-accent:#3fb950">
+        <div class="card-top">
+          <div class="card-favicon">🎨</div>
+          <div>
+            <div class="card-name">v0 by Vercel</div>
+            <div class="card-url">v0.dev</div>
+          </div>
+        </div>
+        <div class="card-desc">텍스트 프롬프트로 React/Tailwind UI 즉시 생성. 바이브 코딩으로 빠른 프로토타이핑</div>
+        <div class="card-tags"><span class="tag free">무료티어</span><span class="tag en">UI생성</span></div>
+      </a>
+
+      <a class="card" href="https://ollama.com" target="_blank" rel="noopener" style="--card-accent:#ffa657">
+        <div class="card-top">
+          <div class="card-favicon">🦙</div>
+          <div>
+            <div class="card-name">Ollama</div>
+            <div class="card-url">ollama.com</div>
+          </div>
+        </div>
+        <div class="card-desc">Llama, Mistral, Gemma 등 오픈소스 LLM을 로컬에서 한 줄로 실행. 로컬 AI 개발의 표준</div>
+        <div class="card-tags"><span class="tag free">무료</span><span class="tag en">로컬LLM</span></div>
+      </a>
+
+      <a class="card" href="https://huggingface.co" target="_blank" rel="noopener" style="--card-accent:#ffa657">
+        <div class="card-top">
+          <div class="card-favicon">🤗</div>
+          <div>
+            <div class="card-name">Hugging Face</div>
+            <div class="card-url">huggingface.co</div>
+          </div>
+        </div>
+        <div class="card-desc">AI 모델·데이터셋 허브. Transformers, Diffusers 등 핵심 라이브러리 본거지</div>
+        <div class="card-tags"><span class="tag free">오픈소스</span><span class="tag en">모델허브</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- 커뮤니티 & 논문 -->
+  <section class="section" id="community">
+    <div class="section-header">
+      <span class="section-icon">🌐</span>
+      <span class="section-title">커뮤니티 & 논문</span>
+      <span class="section-count">6</span>
+    </div>
+    <div class="news-list">
+
+      <a class="news-card" href="https://www.reddit.com/r/LocalLLaMA/" target="_blank" rel="noopener">
+        <div class="news-icon">🦙</div>
+        <div class="news-body">
+          <div class="news-name">r/LocalLLaMA</div>
+          <div class="news-desc">로컬 LLM 실행·파인튜닝 커뮤니티. 최신 오픈소스 모델 벤치마크와 팁 집합소</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag community">커뮤니티</span></div>
+      </a>
+
+      <a class="news-card" href="https://www.reddit.com/r/MachineLearning/" target="_blank" rel="noopener">
+        <div class="news-icon">🔶</div>
+        <div class="news-body">
+          <div class="news-name">r/MachineLearning</div>
+          <div class="news-desc">ML 연구·논문 토론 Reddit. NeurIPS, ICML 등 주요 컨퍼런스 논문 디스커션</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag community">커뮤니티</span></div>
+      </a>
+
+      <a class="news-card" href="https://paperswithcode.com" target="_blank" rel="noopener">
+        <div class="news-icon">📄</div>
+        <div class="news-body">
+          <div class="news-name">Papers With Code</div>
+          <div class="news-desc">ML 논문 + 구현 코드 링크 데이터베이스. State-of-the-art 트래킹</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag research">논문</span></div>
+      </a>
+
+      <a class="news-card" href="https://arxiv.org/list/cs.AI/recent" target="_blank" rel="noopener">
+        <div class="news-icon">📚</div>
+        <div class="news-body">
+          <div class="news-name">ArXiv CS.AI</div>
+          <div class="news-desc">AI 분야 최신 프리프린트 논문. 매일 수십 편의 새 논문 게재</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag research">논문</span></div>
+      </a>
+
+      <a class="news-card" href="https://discord.gg/hugging-face-879548962464493619" target="_blank" rel="noopener">
+        <div class="news-icon">🤗</div>
+        <div class="news-body">
+          <div class="news-name">Hugging Face Discord</div>
+          <div class="news-desc">오픈소스 AI 개발자 커뮤니티. 모델 실험, 파인튜닝, 라이브러리 Q&A</div>
+        </div>
+        <div class="news-tags"><span class="tag en">EN</span><span class="tag community">Discord</span></div>
+      </a>
+
+      <a class="news-card" href="https://www.clien.net/service/board/cm_ai" target="_blank" rel="noopener">
+        <div class="news-icon">🇰🇷</div>
+        <div class="news-body">
+          <div class="news-name">클리앙 AI 게시판</div>
+          <div class="news-desc">국내 AI 활용 사례, 도구 리뷰, 최신 소식 공유. 실사용자 경험 중심</div>
+        </div>
+        <div class="news-tags"><span class="tag ko">한국어</span><span class="tag community">커뮤니티</span></div>
+      </a>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    Made by <a href="https://github.com/chrismangoslab" target="_blank" rel="noopener">chrismangoslab</a> &mdash;
+    <a href="https://github.com/chrismangoslab/chrismangoslab.github.io" target="_blank" rel="noopener">GitHub</a>
+  </p>
+  <p style="margin-top:6px; font-size:12px; color:#484f58">
+    링크 추가 제안은 GitHub Issues로. 매주 수동 업데이트.
+  </p>
+</footer>
+
+</body>
+</html>
